@@ -1,24 +1,24 @@
-package com;
+package PartA;
 
-import java.util.concurrent.Callable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class NumReaderCallable implements Callable {
-
+public class NumReaderThread extends Thread {
     String fileName;
     int numOfLines;
 
-    public NumReaderCallable(String fileName){
+    public NumReaderThread(String fileName){
+        super();
         this.fileName = fileName;
         this.numOfLines = 0;
     }
-
+    
     @Override
-    public Object call() throws Exception {
+    public void run(){
+
         List<String> lines;
         Path filePath = Paths.get(this.fileName);
         try{
@@ -29,7 +29,9 @@ public class NumReaderCallable implements Callable {
             e.printStackTrace();
         }
 
+    }
+
+    public int getNumOfLines(){
         return this.numOfLines;
     }
-    
 }

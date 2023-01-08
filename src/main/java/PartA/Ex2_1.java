@@ -1,4 +1,4 @@
-package com;
+package PartA;
 
 import java.io.File;
 import java.io.IOException; 
