@@ -1,8 +1,7 @@
 package PartB;
 
-import java.util.concurrent.BlockingQueue;
+import java.util.Comparator;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.RunnableFuture;
@@ -14,34 +13,27 @@ public class CustomExecutor<V> extends ThreadPoolExecutor {
     private static int minCores = Runtime.getRuntime().availableProcessors() / 2;
     private static int maxCores = Runtime.getRuntime().availableProcessors() - 1;
 
-    private static PriorityBlockingQueue taskQueue = new PriorityBlockingQueue<>(minCores);
-    int taskPriorityArr[] = new int[15];
-
+    int taskPriorityArr[] = new int[10];
+    
     public CustomExecutor(){
-        super(minCores, maxCores, 300, TimeUnit.MILLISECONDS, taskQueue);
+        super(minCores , maxCores, 300 , TimeUnit.MILLISECONDS , new PriorityBlockingQueue<Runnable>(minCores,Comparator.comparing(taskToCompare ->((FutureTaskCall)taskToCompare))));
     }
 
-    public Future<V> submit(Task<V> task){
+    public <V> Future<V> submit(Task<V> task){
         taskPriorityArr[task.getType().getPriorityValue() - 1] += 1;
-        Future<V> future = super.submit((Callable <V>)task);
-        return future;
+        return super.submit((Callable)task);
     }
 
-    public Future<V> submit(Callable<V> call, TaskType tasktype){
+    public <V> Future<V> submit(Callable call, TaskType tasktype){
     Task<V> task = Task.createTask(call, tasktype);
-    Future<V> future = this.submit(task);
-    return future;
+    return this.submit(task);
     }
     
-    public Future<V> submit(Callable call){
+    public <V> Future<V> submit(Callable<V> call){
         Task<V> task = Task.createTask(call);
-        Future<V> future = this.submit(task);
-        return future;
+        return this.submit(task);
         }
     
-    // public V get() throws InterruptedException, ExecutionException{
-    //     return this.get();
-    // }
     
     public void gracefullyTerminate(){
         super.shutdownNow();
@@ -61,11 +53,15 @@ public class CustomExecutor<V> extends ThreadPoolExecutor {
     }
 
     public int getCurrentMax(){
-        for(int i = 0; i < 15; i++){
+        for(int i = 0; i < 10; i++){
             if(taskPriorityArr[i] > 0){
                 return i+1;
             }
         }
         return -1;
+    }
+
+    public String toString(){
+        return super.toString();
     }
 }

@@ -21,6 +21,13 @@ import java.util.concurrent.Future;
 public class Ex2_1
 {
 
+    
+    /** 
+     * @param n - number of files to create
+     * @param seed - to generate a known set of random numbers
+     * @param bound - upper limit for lines to generate
+     * @return 
+     */
     public static String[] createTextFiles(int n, int seed, int bound){
         String baseTextFileName = "file_";
         String textToWrite = "Hello World";
@@ -54,6 +61,11 @@ public class Ex2_1
         return fileNames;
     }
 
+    
+    /** 
+     * @param fileNames - a list of file names 
+     * @return 
+     */
     public static int getNumOfLines(String[] fileNames){
 
         int numberOfLines = 0;
@@ -75,7 +87,12 @@ public class Ex2_1
     }
 
     
-    public static int getNumOfLinesThreads(String[] fileNames){
+    
+    /** 
+     * @param fileNames
+     * @return 
+     */
+    public int getNumOfLinesThreads(String[] fileNames){
         List<NumReaderThread> threadList = new ArrayList();
         int sumOfLines = 0;
         
@@ -101,7 +118,12 @@ public class Ex2_1
         return sumOfLines;
     }
 
-    public static int getNumOfLinesThreadPool(String[] fileNames){
+    
+    /** 
+     * @param fileNames
+     * @return 
+     */
+    public int getNumOfLinesThreadPool(String[] fileNames){
         int sumOfLines = 0;
 
         ExecutorService threadPool = Executors.newFixedThreadPool(fileNames.length);
@@ -129,30 +151,15 @@ public class Ex2_1
         return sumOfLines;
     }
 
-    public static double differenceTimeMili(double firstTimeMili){
+    
+    /** 
+     * @param firstTimeMili
+     * @return 
+     */
+    public double differenceTimeMili(double firstTimeMili){
         double lastTimeMili = System.currentTimeMillis();
 
         return (lastTimeMili - firstTimeMili) / 1000;
     }
 
-    public static void main( String[] args ){
-        String[] fileList = createTextFiles(4000, 2, 100);
-
-        double firstTimeMili = System.currentTimeMillis();
-        System.out.print("Regular counting: ");
-        System.out.print(getNumOfLines(fileList));
-        System.out.print("\nTime took: " + differenceTimeMili(firstTimeMili));
-        
-        firstTimeMili = System.currentTimeMillis();
-        System.out.print("\nThread counting: ");
-        System.out.print(getNumOfLinesThreads(fileList)); 
-        System.out.print("\nTime took: " + differenceTimeMili(firstTimeMili));
-        
-        firstTimeMili = System.currentTimeMillis();
-        System.out.print("\nThreadPool counting: ");
-        System.out.print(getNumOfLinesThreadPool(fileList));      
-        System.out.print("\nTime took: " + differenceTimeMili(firstTimeMili));
-        
-            
-    }
 }
