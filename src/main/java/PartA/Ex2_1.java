@@ -15,18 +15,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * Hello world!
+ * The Ex2_1 class provides methods for creating text files and reading the number of lines from a given file.
+ * It uses multi-threading to read the number of lines from a given file.
  *
  */
-public class Ex2_1
-{
+public class Ex2_1 {
 
-    
-    /** 
+    /**
+     * Creates text files with a given number of lines.
+     *
      * @param n - number of files to create
      * @param seed - to generate a known set of random numbers
      * @param bound - upper limit for lines to generate
-     * @return 
+     * @return the names of the created files
      */
     public static String[] createTextFiles(int n, int seed, int bound){
         String baseTextFileName = "file_";
@@ -61,10 +62,11 @@ public class Ex2_1
         return fileNames;
     }
 
-    
-    /** 
+    /**
+     * Reads the number of lines from a list of files.
+     *
      * @param fileNames - a list of file names 
-     * @return 
+     * @return the total number of lines in the files
      */
     public static int getNumOfLines(String[] fileNames){
 
@@ -86,11 +88,11 @@ public class Ex2_1
         return numberOfLines;
     }
 
-    
-    
-    /** 
-     * @param fileNames
-     * @return 
+    /**
+     * Reads the number of lines from a list of files using multiple threads.
+     *
+     * @param fileNames - a list of file names 
+     * @return the total number of lines in the files
      */
     public int getNumOfLinesThreads(String[] fileNames){
         List<NumReaderThread> threadList = new ArrayList();
@@ -114,14 +116,14 @@ public class Ex2_1
             }
             sumOfLines += threadList.get(i).getNumOfLines();
         }
-
         return sumOfLines;
     }
-
     
-    /** 
-     * @param fileNames
-     * @return 
+    /**
+     * Reads the number of lines from a list of files using a thread pool.
+     *
+     * @param fileNames - a list of file names 
+     * @return the total number of lines in the files
      */
     public int getNumOfLinesThreadPool(String[] fileNames){
         int sumOfLines = 0;

@@ -3,6 +3,8 @@
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
+import static java.lang.Thread.sleep;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import PartB.CustomExecutor;
 import PartB.Task;
@@ -52,6 +54,9 @@ public class TestsPartB<V> {
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }   
+        assertEquals(reversed.toString(), "ZYXWVUTSRQPONMLKJIHGFEDCBA");
+        assertEquals(totalPrice, 1104.0808032);
+        assertEquals(customExecutor.getCurrentMax(), -1);
         logger.info(() -> "Reversed String = " + reversed);
         logger.info(() -> String.valueOf("Total Price = " + totalPrice));
         logger.info(() -> "Current maximum priority = " +
@@ -59,7 +64,74 @@ public class TestsPartB<V> {
         customExecutor.gracefullyTerminate();
     }
 
+    @Test
     public void secondTest(){
-        
+        CustomExecutor customExecutor = new CustomExecutor();
+
+        Callable<String> secondTask = () ->
+        {
+            StringBuilder sb = new StringBuilder("HOWAREYOUDOING");
+            sleep(2500);
+            return sb.reverse().toString();
+        };
+
+        Callable<String> thirdTask = () ->
+        {
+            StringBuilder sb = new StringBuilder("HOWAREYOUDOING");
+            sleep(2500);
+            return sb.reverse().toString();
+        };
+
+        Callable<String> fourthTask = () ->
+        {
+            StringBuilder sb = new StringBuilder("HOWAREYOUDOING");
+            sleep(2500);
+            return sb.reverse().toString();
+        };
+
+        Callable<String> fifthTask = () ->
+        {
+            StringBuilder sb = new StringBuilder("HOWAREYOUDOING");
+            sleep(2500);
+            return sb.reverse().toString();
+        };
+
+        Callable<Integer> calcTask = () -> {
+            return (int) (Math.pow(8,4) * 3);
+        };
+
+        Future<String> reverseTask = customExecutor.submit(secondTask, TaskType.OTHER);
+        Future<String> reverseTask2 = customExecutor.submit(thirdTask, TaskType.OTHER);
+        Future<String> reverseTask3 = customExecutor.submit(fourthTask, TaskType.IO);
+        Future<String> reverseTask4 = customExecutor.submit(fifthTask, TaskType.IO);
+        Future<Integer> calculationTask = customExecutor.submit(calcTask, TaskType.COMPUTATIONAL);
+
+        String reversed;
+        String reversed2;
+        String reversed3;
+        String reversed4;
+        int calc;
+
+        try
+        {
+            reversed = reverseTask.get();
+            reversed2 = reverseTask2.get();
+            reversed3 = reverseTask3.get();
+            reversed4 = reverseTask4.get();
+            calc = calculationTask.get();
+        }
+        catch (ExecutionException | InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(calc, 12288);
+        assertEquals(reversed.toString(), reversed2.toString());
+        assertEquals(reversed.toString(), reversed2.toString());
+        assertEquals(reversed2.toString(), reversed3.toString());
+        assertEquals(reversed3.toString(), reversed4.toString());
+        logger.info(() -> "String after reversing = " + reversed);
+        logger.info(() -> "Calculation = " + calc);
+        customExecutor.gracefullyTerminate();
     }
 }
