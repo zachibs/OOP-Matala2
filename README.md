@@ -25,7 +25,8 @@ a class extending the Thread class, used for calculating the number of lines in 
 
 ### NumReaderCallable class
 a class implementing the class Callable, used as a thread for the function  getNumOfLinesThreadPool, to calculate the number of lines in a text file.
-### INSERT UML DIAGRAM
+
+![partA diagram](partA-image.png)
 
 ## Second Part
 The second part was a mission to create a task that can be executed async, because in java we can only set priority to a certain thread and not a certain task. we used that task in a class that extended the threadpool class to support the task that we created.<br>
@@ -38,9 +39,10 @@ An enum that defined by 3 options for priority, 3 is Other, 2 is IO, and 1 is Co
 ### CustomExecutor class
 a class extending the class ThreadPoolExecutor, used as a custom thread pool for our tasks with a priority.
 
-## FutureTaskCall class
+### FutureTaskCall class
 a class extending the class FutureTask, used because our CustomExecutor uses by default a RunnableFuture in our blocking queue. this class helps us adapt our Callable tasks with priority so we can get that priority back after being passed to the pool.
-### INSERT UML DIAGRAM
+
+![partB diagram](partB-image.png)
 
 ## Setup
 **prerequisites:**

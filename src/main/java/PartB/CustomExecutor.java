@@ -87,6 +87,12 @@ public class CustomExecutor<V> extends ThreadPoolExecutor {
      */
     public void gracefullyTerminate(){
         super.shutdownNow();
+        try{
+            super.awaitTermination(4000,TimeUnit.MILLISECONDS);
+        }
+        catch (InterruptedException e){
+            System.out.println(e);
+        }
     }
     /**
      * Method that creates a new task for the provided callable, it is
